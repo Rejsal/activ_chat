@@ -13,6 +13,7 @@ class ChatModel {
     String? fromId,
     String? fromName,
     String? message,
+    String? category,
     String? date,
     String? type,
     String? gameId,
@@ -22,6 +23,7 @@ class ChatModel {
     _fromId = fromId;
     _fromName = fromName;
     _message = message;
+    _category = category;
     _date = date;
     _type = type;
     _gameId = gameId;
@@ -33,6 +35,7 @@ class ChatModel {
     _fromId = json['from_id'];
     _fromName = json['from_name'];
     _message = json['message'];
+    _category = json['category'];
     _date = json['date'];
     _type = json['type'];
     _gameId = json['game_id'];
@@ -42,6 +45,7 @@ class ChatModel {
   String? _fromId;
   String? _fromName;
   String? _message;
+  String? _category;
   String? _date;
   String? _type;
   String? _gameId;
@@ -50,6 +54,7 @@ class ChatModel {
     String? fromId,
     String? fromName,
     String? message,
+    String? category,
     String? date,
     String? type,
     String? gameId,
@@ -59,6 +64,7 @@ class ChatModel {
         fromId: fromId ?? _fromId,
         fromName: fromName ?? _fromName,
         message: message ?? _message,
+        category: category ?? _category,
         date: date ?? _date,
         type: type ?? _type,
         gameId: gameId ?? _gameId,
@@ -68,6 +74,7 @@ class ChatModel {
   String? get fromId => _fromId;
   String? get fromName => _fromName;
   String? get message => _message;
+  String? get category => _category;
   String? get date => _date;
   String? get type => _type;
   String? get gameId => _gameId;
@@ -78,6 +85,7 @@ class ChatModel {
     map['from_id'] = _fromId;
     map['from_name'] = _fromName;
     map['message'] = _message;
+    map['category'] = _category;
     map['date'] = _date;
     map['type'] = _type;
     map['game_id'] = _gameId;

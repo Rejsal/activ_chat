@@ -6,6 +6,8 @@ import 'package:activ_chat/providers/chat_provider.dart';
 import 'package:activ_chat/providers/group_provider.dart';
 import 'package:activ_chat/screens/chat/invite_screen.dart';
 import 'package:activ_chat/screens/chat/text_detector_view.dart';
+import 'package:activ_chat/screens/game/treasure_hunt/host_game_screen.dart';
+import 'package:activ_chat/screens/game/treasure_hunt/object_detection_view.dart';
 import 'package:activ_chat/utils/date_formatter.dart';
 import 'package:activ_chat/utils/styles.dart';
 import 'package:animations/animations.dart';
@@ -63,9 +65,20 @@ class _ChatScreenState extends State<ChatScreen> {
           Container(
             width: 16.0,
           ),
-          InkWell(
-            onTap: () {},
-            child: const Icon(Icons.videogame_asset),
+          OpenContainer(
+            closedElevation: 0.0,
+            closedColor: kPrimary,
+            transitionDuration: const Duration(seconds: 1),
+            transitionType: ContainerTransitionType.fade,
+            openBuilder: (BuildContext context, VoidCallback _) {
+              return HostGameScreen(group: widget.group);
+            },
+            closedBuilder: (BuildContext context, VoidCallback openContainer) {
+              return const Icon(
+                Icons.videogame_asset,
+                color: Colors.white,
+              );
+            },
           ),
           Container(
             width: 16.0,
@@ -186,6 +199,8 @@ class MessagesStream extends StatelessWidget {
         date: message.date ?? DateTime.now().toString(),
         text: messageText ?? "",
         isMe: user.userInfo?.uid == message.fromId,
+        type: message.type ?? 'chat',
+        chat: message,
       );
 
       messageBubbles.add(messageBubble);
@@ -206,6 +221,8 @@ class MessageBubble extends StatelessWidget {
       required this.date,
       required this.text,
       required this.isMe,
+      required this.type,
+      required this.chat,
       Key? key})
       : super(key: key);
 
@@ -213,6 +230,8 @@ class MessageBubble extends StatelessWidget {
   final String date;
   final String text;
   final bool isMe;
+  final String type;
+  final ChatModel chat;
 
   @override
   Widget build(BuildContext context) {
@@ -266,13 +285,41 @@ class MessageBubble extends StatelessWidget {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
-              child: Text(
-                text,
-                style: const TextStyle(
-                  color: Colors.black87,
-                  fontSize: 15.0,
-                ),
-              ),
+              child: type == 'chat'
+                  ? Text(
+                      text,
+                      style: const TextStyle(
+                        color: Colors.black87,
+                        fontSize: 15.0,
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        Text(
+                          text,
+                          style: const TextStyle(
+                            color: Colors.black87,
+                            fontSize: 15.0,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 4.0,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ObjectDetectorView(chat: chat)));
+                          },
+                          child: const Text(
+                            "Join game",
+                            style: TextStyle(color: Colors.blueAccent),
+                          ),
+                        )
+                      ],
+                    ),
             ),
           ),
         ],
