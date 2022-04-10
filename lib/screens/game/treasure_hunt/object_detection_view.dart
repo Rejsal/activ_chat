@@ -16,18 +16,16 @@ class ObjectDetectorView extends StatefulWidget {
 }
 
 class _ObjectDetectorView extends State<ObjectDetectorView> {
-  late ObjectDetector objectDetector;
+  ObjectDetector objectDetector = GoogleMlKit.vision.objectDetector(
+      ObjectDetectorOptions(trackMutipleObjects: true, classifyObjects: true));
 
   @override
   void initState() {
-    objectDetector = GoogleMlKit.vision.objectDetector(ObjectDetectorOptions(
-        trackMutipleObjects: true, classifyObjects: true));
     super.initState();
   }
 
   bool isBusy = false;
   bool success = false;
-  CustomPaint? customPaint;
 
   @override
   void dispose() {
@@ -39,35 +37,24 @@ class _ObjectDetectorView extends State<ObjectDetectorView> {
   Widget build(BuildContext context) {
     final chat = Provider.of<ChatProvider>(context);
     final user = Provider.of<AuthProvider>(context);
-    return Stack(
-      children: [
-        Expanded(
-          child: CameraView(
-            title: 'Object Detector',
-            customPaint: customPaint,
-            onImage: (inputImage) {
-              processImage(inputImage);
-            },
-            onSubmit: () {
-              if (success) {
-                chat.createChat(ChatModel(
-                    group: widget.chat.group,
-                    fromName: user.userInfo?.name,
-                    fromId: user.userInfo?.uid,
-                    message: "I won the game!",
-                    date: DateTime.now().toString(),
-                    type: 'chat'));
-                Navigator.pop(context);
-              }
-            },
-          ),
-        ),
-        success
-            ? Center(
-                child: Image.asset('assets/icons/tick.png'),
-              )
-            : Container()
-      ],
+    return CameraView(
+      title: 'Object Detector',
+      customPaint: null,
+      onImage: (inputImage) {
+        processImage(inputImage);
+      },
+      onSubmit: () {
+        if (success) {
+          chat.createChat(ChatModel(
+              group: widget.chat.group,
+              fromName: user.userInfo?.name,
+              fromId: user.userInfo?.uid,
+              message: "I won the game!",
+              date: DateTime.now().toString(),
+              type: 'chat'));
+          Navigator.pop(context);
+        }
+      },
     );
   }
 
@@ -81,6 +68,9 @@ class _ObjectDetectorView extends State<ObjectDetectorView> {
           if (label.getText().toLowerCase() ==
                   widget.chat.category?.toLowerCase() &&
               label.getConfidence() >= 0.7) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Object detected! Please submit..."),
+            ));
             setState(() {
               success = true;
             });

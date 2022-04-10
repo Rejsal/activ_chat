@@ -49,7 +49,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: <Widget>[
           OpenContainer(
             closedElevation: 0.0,
-            closedColor: kPrimary,
+            closedColor: Colors.black,
             transitionDuration: const Duration(seconds: 1),
             transitionType: ContainerTransitionType.fade,
             openBuilder: (BuildContext context, VoidCallback _) {
@@ -67,7 +67,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           OpenContainer(
             closedElevation: 0.0,
-            closedColor: kPrimary,
+            closedColor: Colors.black,
             transitionDuration: const Duration(seconds: 1),
             transitionType: ContainerTransitionType.fade,
             openBuilder: (BuildContext context, VoidCallback _) {
