@@ -91,7 +91,7 @@ class _CameraViewState extends State<CameraView> {
 
     // to prevent scaling down, invert the value
     if (scale < 1) scale = 1 / scale;
-
+    final camera = Provider.of<CameraProvider>(context);
     return Container(
       color: Colors.black,
       child: Stack(
@@ -123,7 +123,16 @@ class _CameraViewState extends State<CameraView> {
                   ? null
                   : (maxZoomLevel - 1).toInt(),
             ),
-          )
+          ),
+          camera.objectStatus
+              ? Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  child: Image.asset('assets/icons/tick.png'),
+                )
+              : Container()
         ],
       ),
     );

@@ -6,11 +6,13 @@ class CameraProvider with ChangeNotifier {
   int _cameraIndex = 0;
   final CameraLensDirection _initialDirection = CameraLensDirection.back;
   String _recognizedText = "";
+  bool _objectStatus = false;
 
   List<CameraDescription> get cameras => _cameras;
   int get cameraIndex => _cameraIndex;
   CameraLensDirection get initialDirection => _initialDirection;
   String get recognizedText => _recognizedText;
+  bool get objectStatus => _objectStatus;
 
   Future<void> loadCameras() async {
     _cameras = await availableCameras();
@@ -42,6 +44,11 @@ class CameraProvider with ChangeNotifier {
 
   void updateRecognizedText(String text) {
     _recognizedText = text;
+    notifyListeners();
+  }
+
+  void setObjectDetectionStatus(bool status) {
+    _objectStatus = status;
     notifyListeners();
   }
 }

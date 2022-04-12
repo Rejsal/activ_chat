@@ -235,6 +235,7 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final camera = Provider.of<CameraProvider>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
       child: Column(
@@ -306,7 +307,8 @@ class MessageBubble extends StatelessWidget {
                           height: 4.0,
                         ),
                         InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            camera.setObjectDetectionStatus(false);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
